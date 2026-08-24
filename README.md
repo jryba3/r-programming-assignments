@@ -1,4 +1,4 @@
 ## R Programming Assignments
-# Jacob Ryba
+#### Jacob Ryba
 _LIS 4370
 Repository for R Programming Assignments_
