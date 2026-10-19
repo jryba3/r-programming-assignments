@@ -1,8 +1,8 @@
 student6 <- read.table(file.choose(), header = TRUE, stringsAsFactors = FALSE)
-print(student6)
+str(student6)
 
 student6 <- read.table(file.choose(), header = TRUE, stringsAsFactors = FALSE, sep = ",")
-print(student6)
+str(student6)
 
 library(plyr)
 
