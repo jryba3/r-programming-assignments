@@ -1,0 +1,49 @@
+Debugging and Defensive Programming in R
+================
+
+``` r
+tukey_multiple <- function(x) {
+  outliers <- array(TRUE, dim = dim(x))
+  for (j in 1:ncol(x)) {
+    outliers[, j] <- outliers[, j] && tukey.outlier(x[, j])
+    }
+  outlier.vec <- vector("logical", length = nrow(x))
+  for (i in 1:nrow(x)) {
+    outlier.vec[i] <- all(outliers[i, ])
+    }
+  return(outlier.vec)
+  }
+set.seed(123)
+test_mat <- matrix(rnorm(50), nrow = 10)
+tukey_multiple(test_mat)
+```
+
+    ## Error in `outliers[, j] && tukey.outlier(x[, j])`:
+    ## ! 'length = 10' in coercion to 'logical(1)'
+
+``` r
+corrected_tukey <- function(x) {
+  outliers <- array(TRUE, dim = dim(x))
+  for (j in seq_len(ncol(x))) {
+    outliers[, j] <- outliers[, j] & tukey.outlier(x[, j])
+    }
+  outlier.vec <- logical(nrow(x))
+  for (i in seq_len(nrow(x))) {
+    outlier.vec[i] <- all(outliers[i, ])
+    }
+  outlier.vec
+  }
+corrected_tukey(test_mat)
+```
+
+    ## Error in `tukey.outlier()`:
+    ## ! could not find function "tukey.outlier"
+
+``` r
+tukey.outlier <- function(x) {
+  x %in% boxplot.stats(x)$out
+}
+corrected_tukey(test_mat)
+```
+
+    ##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
